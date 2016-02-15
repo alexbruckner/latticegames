@@ -1,0 +1,25 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "node",
+            "otherEntityName": "node",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "lattice"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20160215194041",
+    "dto": "no",
+    "service": "no",
+    "pagination": "pagination"
+}
