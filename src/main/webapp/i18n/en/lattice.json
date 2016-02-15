@@ -1,0 +1,23 @@
+{
+    "latticegamesApp": {
+        "lattice" : {
+            "home": {
+                "title": "Lattices",
+                "createLabel": "Create a new Lattice",
+                "createOrEditLabel": "Create or edit a Lattice",
+                "search": "Search for Lattice"
+            },
+            "created": "A new Lattice is created with identifier {{ param }}",
+            "updated": "A Lattice is updated with identifier {{ param }}",
+            "deleted": "A Lattice is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Lattice {{ id }}?"
+            },
+            "detail": {
+                "title": "Lattice"
+            },
+            "name": "Name",
+            "node": "Node"
+        }
+    }
+}

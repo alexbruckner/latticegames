@@ -1,0 +1,60 @@
+
+<form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="clear()">&times;</button>
+        <h4 class="modal-title" id="myNodeLabel" translate="latticegamesApp.node.home.createOrEditLabel">Create or edit a Node</h4>
+    </div>
+    <div class="modal-body">
+        <jh-alert-error></jh-alert-error>
+        <div class="form-group">
+            <label for="id" translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="node.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="latticegamesApp.node.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="node.name"
+                    required />
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.name.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="latticegamesApp.node.x" for="field_x">X</label>
+            <input type="number" class="form-control" name="x" id="field_x"
+                    ng-model="node.x"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="latticegamesApp.node.y" for="field_y">Y</label>
+            <input type="number" class="form-control" name="y" id="field_y"
+                    ng-model="node.y"
+                     />
+        </div>
+
+        <div class="form-group">
+            <label translate="latticegamesApp.node.lattice" for="field_lattice">lattice</label>
+            <select class="form-control" id="field_lattice" name="lattice" ng-model="node.lattice" ng-options="lattice as lattice.id for lattice in lattices track by lattice.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label translate="latticegamesApp.node.neighbour" for="field_neighbour">neighbour</label>
+            <select class="form-control" id="field_neighbour" multiple name="neighbour" ng-model="node.neighbours" ng-options="node as node.id for node in nodes track by node.id"></select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,64 @@
+
+<div>
+    <h2><span translate="latticegamesApp.node.detail.title">Node</span> {{node.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th translate="entity.detail.field">Field</th>
+                <th translate="entity.detail.value">Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span translate="latticegamesApp.node.name">Name</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{node.name}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="latticegamesApp.node.x">X</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{node.x}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="latticegamesApp.node.y">Y</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{node.y}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="latticegamesApp.node.lattice">lattice</span>
+                </td>
+                <td>
+                    <a class="form-control-static" ui-sref="lattice.detail({id:node.lattice.id})">{{node.lattice.id}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="latticegamesApp.node.neighbour">neighbour</span>
+                </td>
+                <td>
+                    <span ng-repeat="neighbour in node.neighbours">
+                        <a class="form-control-static" ui-sref="node.detail({id: {{neighbour.id}}})">{{neighbour.id}}</a>{{$last ? '' : ', '}}
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

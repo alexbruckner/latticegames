@@ -1,0 +1,24 @@
+{
+    "latticegamesApp": {
+        "lattice" : {
+            "home": {
+                "title": "Lattices",
+                "createLabel": "Créer un nouveau Lattice",
+                "createOrEditLabel": "Créer ou éditer un Lattice",
+                "search": "Search for Lattice"
+            },
+            "created": "Un nouveau Lattice a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Lattice avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Lattice avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Lattice {{ id }} ?"
+            },
+            "detail": {
+                "title": "Lattice"
+            },
+            "name": "Name",
+            "node": "Node"
+        }
+    }
+}
+

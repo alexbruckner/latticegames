@@ -1,0 +1,27 @@
+{
+    "latticegamesApp": {
+        "node" : {
+            "home": {
+                "title": "Nodes",
+                "createLabel": "Créer un nouveau Node",
+                "createOrEditLabel": "Créer ou éditer un Node",
+                "search": "Search for Node"
+            },
+            "created": "Un nouveau Node a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Node avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Node avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Node {{ id }} ?"
+            },
+            "detail": {
+                "title": "Node"
+            },
+            "name": "Name",
+            "x": "X",
+            "y": "Y",
+            "lattice": "Lattice",
+            "neighbour": "Neighbour"
+        }
+    }
+}
+
