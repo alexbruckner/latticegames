@@ -33,8 +33,7 @@ angular.module('starter', ['ionic'])
 
 .controller('CreateLatticeController', function($scope, $http) {
 
-    $scope.firstName= "John";
-    $scope.lastName= "Doe";
+    $scope.latticeName= "Lattice";
 
     var nodes = {};
     var lines = {};
@@ -324,10 +323,10 @@ angular.module('starter', ['ionic'])
             method: 'GET',
             url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices'
         }).then(
-          function successCallback(response) {
+          function success(response) {
             $scope.lattices = response.data;
           },
-          function errorCallback(response) {
+          function error(response) {
             console.log(response);
           }
         );
@@ -335,14 +334,33 @@ angular.module('starter', ['ionic'])
 
       $scope.saveLattice = function () {
 
-            var nodes = new Set();
+            var linkNodes = new Set();
+
             for (i in links) {
-              fuckies=i.split("-");
-              nodes.add(fuckies[0]);
-              nodes.add(fuckies[1]);
+              nodeId=i.split("-");
+              linkNodes.add(nodeId[0]);
+              linkNodes.add(nodeId[1]);
             }
 
+            console.log(linkNodes);
             console.log(nodes);
+
+            //TODO create nodes, update nodes with links
+             $http({
+                  method: $scope.latticeId == null ? 'POST' : 'PUT',
+                  url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices',
+                  data: {"id" : $scope.latticeId, "name": $scope.latticeName}
+              }).then(
+                function success(response) {
+                  console.log(response.data);
+                  $scope.latticeId = response.data.id;
+                  $scope.loadLattices();
+                },
+                function error(response) {
+                  console.log(response);
+                }
+              );
+
 
             $scope.loadLattices();
       }

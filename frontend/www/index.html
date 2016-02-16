@@ -28,10 +28,9 @@
 
 <div id="createLattice" ng-app="myApp" ng-controller="CreateLatticeController">
 
-  First Name: <input type="text" ng-model="firstName"><br>
-  Last Name: <input type="text" ng-model="lastName"><br>
+  Lattice Name: <input type="text" ng-model="latticeName"><br>
   <br>
-  Full Name: {{firstName + " " + lastName}}
+  Lattice Name: {{latticeName}}
 
   <br>
     <h3>Lattices</h3>
@@ -41,7 +40,7 @@
   <br>
 
   <button ng-click="logLinks()">Log Links</button>
-  <button ng-click="saveLattice()">Save Links</button>
+  <button ng-click="saveLattice()">Save Lattice</button>
   <br>
 
 </div>
