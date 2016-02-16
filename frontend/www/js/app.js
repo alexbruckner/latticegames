@@ -1,3 +1,11 @@
+// TODO for now set env crap here
+
+var API_PROTOCOL = "http";
+var API_HOST = "localhost";
+var API_PORT = 8080;
+
+
+
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
@@ -309,48 +317,36 @@ angular.module('starter', ['ionic'])
       console.log(links);
     }
 
-    $scope.saveLattice = function () {
 
-      var nodes = new Set();
-      for (i in links) {
-        fuckies=i.split("-");
-        nodes.add(fuckies[0]);
-        nodes.add(fuckies[1]);
+
+     $scope.loadLattices = function () {
+        $http({
+            method: 'GET',
+            url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices'
+        }).then(
+          function successCallback(response) {
+            $scope.lattices = response.data;
+          },
+          function errorCallback(response) {
+            console.log(response);
+          }
+        );
       }
 
-      console.log(nodes);
+      $scope.saveLattice = function () {
 
-      // token
-      var token;
-
-      $http({
-          method: 'POST',
-          url: 'http://localhost:8080/api/authenticate?username=user&password=user', //TODO figure out the data way! Fuckers!
-      }).then(
-        function successCallback(response) {
-          token = response.data.token;
-          console.log(token);
-          $http({
-              method: 'GET',
-              url: 'http://localhost:8080/api/lattices',
-              headers: {'x-auth-token' : token},
-          }).then(
-            function successCallback(response) {
-              console.log(response);
-            },
-            function errorCallback(response) {
-              console.log(response);
+            var nodes = new Set();
+            for (i in links) {
+              fuckies=i.split("-");
+              nodes.add(fuckies[0]);
+              nodes.add(fuckies[1]);
             }
-          );
-        },
-        function errorCallback(response) {
-          console.log(response);
-        }
-      );
 
+            console.log(nodes);
 
+            $scope.loadLattices();
+      }
 
-
-    }
+      $scope.loadLattices();
 
 })
