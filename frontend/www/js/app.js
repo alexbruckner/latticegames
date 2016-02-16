@@ -87,7 +87,7 @@ angular.module('starter', ['ionic'])
 
     }
 
-    nodeId = 1;
+    var nodeId = 1;
     function createNode(x, y)
     {
         // create our little node friend..
