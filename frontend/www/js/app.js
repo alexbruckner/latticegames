@@ -334,35 +334,24 @@ angular.module('starter', ['ionic'])
 
       $scope.saveLattice = function () {
 
-            var linkNodes = new Set();
-
-            for (i in links) {
-              nodeId=i.split("-");
-              linkNodes.add(nodeId[0]);
-              linkNodes.add(nodeId[1]);
+        //TODO create nodes, update nodes with links
+         $http({
+              method: $scope.latticeId == null ? 'POST' : 'PUT',
+              url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices',
+              data: {"id" : $scope.latticeId, "name": $scope.latticeName}
+          }).then(
+            function success(response) {
+              console.log(response.data);
+              $scope.latticeId = response.data.id;
+              $scope.loadLattices();
+            },
+            function error(response) {
+              console.log(response);
             }
-
-            console.log(linkNodes);
-            console.log(nodes);
-
-            //TODO create nodes, update nodes with links
-             $http({
-                  method: $scope.latticeId == null ? 'POST' : 'PUT',
-                  url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices',
-                  data: {"id" : $scope.latticeId, "name": $scope.latticeName}
-              }).then(
-                function success(response) {
-                  console.log(response.data);
-                  $scope.latticeId = response.data.id;
-                  $scope.loadLattices();
-                },
-                function error(response) {
-                  console.log(response);
-                }
-              );
+          );
 
 
-            $scope.loadLattices();
+        $scope.loadLattices();
       }
 
       $scope.loadLattices();
