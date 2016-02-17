@@ -55,6 +55,26 @@ public class NodeResource {
     }
 
     /**
+     * POST  /nodes -> Create a new node.
+     */
+    @RequestMapping(value = "/nodes/link/{from}/{to}",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Node> linkNodes(@PathVariable("from") Long nodeIdFrom, @PathVariable("to") Long nodeIdTo) throws URISyntaxException {
+        log.debug(String.format("REST request to link nodes : %s -> %s", nodeIdFrom, nodeIdTo));
+
+        Node nodeFrom = nodeRepository.findOneWithEagerRelationships(nodeIdFrom);
+
+        Node other = new Node();
+        other.setId(nodeIdTo);
+        nodeFrom.getNeighbours().add(other);
+
+        return updateNode(nodeFrom);
+    }
+
+
+    /**
      * PUT  /nodes -> Updates an existing node.
      */
     @RequestMapping(value = "/nodes",

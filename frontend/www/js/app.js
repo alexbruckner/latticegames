@@ -332,11 +332,33 @@ angular.module('starter', ['ionic'])
         );
       }
 
+      // TODO NOTE we want a service to expose the api in js only, move all backend stuff into a service.
+
+      function updateNodesWithLinks() {
+         for (i in links) {
+
+              var linkNodes = i.split("-");
+
+              console.log("link: " + linkNodes[0] + "->" + linkNodes[1]);
+
+              $http({
+                  method: 'POST',
+                  url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/nodes/link/' + nodes[linkNodes[0]].dbId + '/' + nodes[linkNodes[1]].dbId
+              }).then(
+                function success(response) {
+                  console.log(response.data);
+                },
+                function error(response) {
+                  console.log("ERROR !!! " +  response);
+                }
+              );
+          }
+      }
 
       function saveNodesForLattice(latticeId) {
 
-        console.log(nodes);
-
+        var maxCnt = Object.keys(nodes).length;
+        var cnt = 0;
         for (i in nodes) {
 
           console.log("Saving node: " + nodes[i].id + " for lattice: " + latticeId + ", dbid: " + nodes[i].dbId);
@@ -349,26 +371,20 @@ angular.module('starter', ['ionic'])
             function success(response) {
               console.log(response.data);
               nodes[response.data.name].dbId = response.data.id;
+              cnt++;
+              console.log(cnt);
+              if (cnt == maxCnt) { // last one and all ok!
+                updateNodesWithLinks();
+              }
             },
             function error(response) {
-              console.log("!!! " +  response);
+              console.log("ERROR !!! " +  response);
             }
           );
-
-          // TODO well fucking do it. save those node links from the fires of hell.
-
-
-          // TODO NOTE we want a service to expose the api in js only
-
-
-
         }
-
       }
 
       $scope.saveLattice = function () {
-
-        //TODO create nodes, update nodes with links
          $http({
               method: $scope.latticeId == null ? 'POST' : 'PUT',
               url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices',
@@ -381,14 +397,11 @@ angular.module('starter', ['ionic'])
               $scope.loadLattices();
             },
             function error(response) {
-              console.log(response);
+              console.log("ERROR !!! " + response);
             }
           );
-
-
         $scope.loadLattices();
       }
 
       $scope.loadLattices();
-
 })
