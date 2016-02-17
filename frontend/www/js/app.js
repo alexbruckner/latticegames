@@ -332,6 +332,40 @@ angular.module('starter', ['ionic'])
         );
       }
 
+
+      function saveNodesForLattice(latticeId) {
+
+        console.log(nodes);
+
+        for (i in nodes) {
+
+          console.log("Saving node: " + nodes[i].id + " for lattice: " + latticeId + ", dbid: " + nodes[i].dbId);
+
+          $http({
+              method: nodes[i].dbId == null ? 'POST' : 'PUT',
+              url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/nodes',
+              data: {"id" : nodes[i].dbId , "lattice" : {"id" : $scope.latticeId}, "name" : nodes[i].id, "x" : nodes[i].position.x, "y" : nodes[i].position.y}
+          }).then(
+            function success(response) {
+              console.log(response.data);
+              nodes[response.data.name].dbId = response.data.id;
+            },
+            function error(response) {
+              console.log("!!! " +  response);
+            }
+          );
+
+          // TODO well fucking do it. save those node links from the fires of hell.
+
+
+          // TODO NOTE we want a service to expose the api in js only
+
+
+
+        }
+
+      }
+
       $scope.saveLattice = function () {
 
         //TODO create nodes, update nodes with links
@@ -343,6 +377,7 @@ angular.module('starter', ['ionic'])
             function success(response) {
               console.log(response.data);
               $scope.latticeId = response.data.id;
+              saveNodesForLattice($scope.latticeId);
               $scope.loadLattices();
             },
             function error(response) {
