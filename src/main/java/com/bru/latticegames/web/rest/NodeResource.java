@@ -111,6 +111,20 @@ public class NodeResource {
     }
 
     /**
+     * GET  /nodes -> get all the nodes for a lattice.
+     */
+    @RequestMapping(value = "/lattices/{latticeId}/nodes",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Node>> getNodesForLattice(@PathVariable("latticeId") Long latticeId)
+        throws URISyntaxException {
+        log.debug("REST request to get Nodes for lattice: " + latticeId);
+        List<Node> nodes = nodeRepository.findByLattice_Id(latticeId);
+        return ResponseEntity.ok().body(nodes);
+    }
+
+    /**
      * GET  /nodes/:id -> get the "id" node.
      */
     @RequestMapping(value = "/nodes/{id}",

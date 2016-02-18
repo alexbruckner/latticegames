@@ -40,6 +40,7 @@ angular.module('starter', ['ionic'])
     var links = {};
     var texts = {};
 
+
     var element = document.getElementById("createLattice");
     WIDTH = 600;
     HEIGHT = 400;
@@ -51,6 +52,30 @@ angular.module('starter', ['ionic'])
 
     // create a texture from an image path
     var texture = PIXI.Texture.fromImage('img/ionic.png');
+
+     function reset() {
+
+          for (i in nodes) {
+              stage.removeChild(nodes[i]);
+              delete nodes[i];
+          }
+
+          for (i in links) {
+              stage.removeChild(links[i]);
+              delete links[i];
+          }
+
+          for (i in texts) {
+              stage.removeChild(texts[i]);
+              delete texts[i];
+          }
+
+          nodes = {};
+          links = {};
+          texts = {};
+
+     }
+
 
     createBackground();
 
@@ -88,12 +113,17 @@ angular.module('starter', ['ionic'])
     }
 
     var nodeId = 1;
-    function createNode(x, y)
+
+    function createNode(x, y, id)
     {
         // create our little node friend..
         var node = new PIXI.Sprite(texture);
 
-        node.id = nodeId++;
+        if (id) {
+          node.id = id;
+        } else {
+          node.id = nodeId++;
+        }
 
         // enable the node to be interactive... this will allow it to respond to mouse and touch events
         node.interactive = true;
@@ -331,6 +361,36 @@ angular.module('starter', ['ionic'])
           }
         );
       }
+
+      $scope.displayLattice = function (latticeId) {
+
+        $http({
+            method: 'GET',
+            url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices/' + latticeId + '/nodes'
+        }).then(
+          function success(response) {
+            console.log(response.data);
+            reset();
+            nodeId = 1;
+            $scope.latticeId = latticeId;
+            nodes = response.data;
+            // TODO show links too in loaded lattice! and fix that friggin bug shite
+            for (i in nodes) {
+              console.debug(nodes[i]);
+              createNode(nodes[i].x, nodes[i].y, nodes[i].name);
+              nodeId++;
+            }
+
+          },
+          function error(response) {
+            console.log("ERROR !!! " + response);
+          }
+        );
+
+
+
+      }
+
 
       // TODO NOTE we want a service to expose the api in js only, move all backend stuff into a service.
 

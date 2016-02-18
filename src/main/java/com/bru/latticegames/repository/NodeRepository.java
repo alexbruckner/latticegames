@@ -18,4 +18,6 @@ public interface NodeRepository extends JpaRepository<Node,Long> {
     @Query("select node from Node node left join fetch node.neighbours where node.id =:id")
     Node findOneWithEagerRelationships(@Param("id") Long id);
 
+    List<Node> findByLattice_Id(Long latticeId);
+
 }

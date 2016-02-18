@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "node")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Node implements Serializable {
+public class    Node implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,13 +25,13 @@ public class Node implements Serializable {
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
-    
+
     @Column(name = "x")
     private Integer x;
-    
+
     @Column(name = "y")
     private Integer y;
-    
+
     @ManyToOne
     @JoinColumn(name = "lattice_id")
     private Lattice lattice;
@@ -54,7 +54,7 @@ public class Node implements Serializable {
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -62,7 +62,7 @@ public class Node implements Serializable {
     public Integer getX() {
         return x;
     }
-    
+
     public void setX(Integer x) {
         this.x = x;
     }
@@ -70,7 +70,7 @@ public class Node implements Serializable {
     public Integer getY() {
         return y;
     }
-    
+
     public void setY(Integer y) {
         this.y = y;
     }

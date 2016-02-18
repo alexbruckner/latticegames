@@ -35,7 +35,7 @@
   <br>
     <h3>Lattices</h3>
     <div ng-repeat="l in lattices">
-      <table><tr><td>{{l.id}}&nbsp;</td><td>{{l.name}}</td></tr></table>
+      <table><tr><td><button ng-click="displayLattice(l.id)">{{l.id}}&nbsp;{{l.name}}</button></td></tr></table>
     </div>
   <br>
 
