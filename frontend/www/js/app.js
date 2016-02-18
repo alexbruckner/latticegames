@@ -4,7 +4,9 @@ var API_PROTOCOL = "http";
 var API_HOST = "localhost";
 var API_PORT = 8080;
 
-
+// TODO
+//TODO REFACTORIIIIIING INTO PROPER TYPES AND API!!!! reload does not work at all!!!!!!!!!
+//TODO
 
 // Ionic Starter App
 
