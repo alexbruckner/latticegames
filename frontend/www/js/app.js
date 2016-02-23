@@ -37,12 +37,15 @@ angular.module('starter', ['ionic'])
 
   var l = LatticeGames.Lattice("muh");
 
-  var n1 = LatticeGames.Node("1");
+  var n1 = LatticeGames.Node();
+  var n2 = LatticeGames.Node();
 
   l.add(n1);
+  l.add(n2);
+
+  n1.link(n2);
 
   log(l);
-  log(n1);
 
 //    $scope.latticeName= "Lattice";
 //
