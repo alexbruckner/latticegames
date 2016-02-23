@@ -45,14 +45,15 @@ var Node = function () {
   this.neighbours = [];
   this.link = function (otherNode, dontDoOther) {
     if (this.lattice === otherNode.lattice) {
-      if (!this.neighbours.contains(otherNode)) {
-        this.neighbours.push(otherNode);
-      } else {
+      if (this === otherNode) {
+        console.error("Node cannot be linked to itself.".format(this));
+      } else if (this.neighbours.contains(otherNode)) {
         console.error("{0} is already a neighbour.".format(otherNode));
-        return;
-      }
-      if (!dontDoOther) {
-        otherNode.link(this, true);
+      } else {
+        this.neighbours.push(otherNode);
+        if (!dontDoOther) {
+          otherNode.link(this, true);
+        }
       }
     } else {
       console.error("{0} and {1} do not belong to the same lattice.".format(this, otherNode));
