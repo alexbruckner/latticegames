@@ -63,7 +63,7 @@ var Node = function (stage, texture, x, y) {
   this.toString = function(){
     return "Node {id: {0}, name: {1}, neighbours: {2}}".format(this.id, this.name, this.neighbours.map(function (neighbour) {return neighbour.name;}).join(", "));
   }
-  this.graphics = function(stage, texture, x, y) {
+  function graphics(stage, texture, x, y) {
           // create our little node friend..
             var node = new PIXI.Sprite(texture);
 
@@ -100,8 +100,6 @@ var Node = function (stage, texture, x, y) {
             // add it to the stage
             stage.addChild(node);
             this.graphicsNode = node;
-
-
 
       function onDragStart(event)
       {
@@ -186,7 +184,7 @@ var Node = function (stage, texture, x, y) {
 
   }
 
-  this.graphics(stage, texture, x, y);
+  graphics(stage, texture, x, y);
   return this;
 }
 
