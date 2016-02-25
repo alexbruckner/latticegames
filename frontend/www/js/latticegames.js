@@ -99,7 +99,16 @@ var Node = function (stage, texture, x, y) {
 
             // add it to the stage
             stage.addChild(node);
+
+//            // add test to node
+//            // TODO unfuck you!!!
+//            var text = new PIXI.Text("fuck you", {font:"20px Arial", fill:"red"});
+//            text.x = node.position.x-text.width/2;
+//            text.y = node.position.y-text.height/2;
+//            stage.addChild(text);
+
             this.graphicsNode = node;
+
 
       function onDragStart(event)
       {

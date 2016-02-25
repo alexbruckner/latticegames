@@ -126,22 +126,7 @@ angular.module('starter', ['ionic'])
         lattice.add(LatticeGames.Node(stage, texture, x, y));
         log(lattice);
     }
-//
-//    function createText(node) {
-//
-//      var text = new PIXI.Text(node.id, {font:"20px Arial", fill:"red"});
-//      text.x = node.position.x-text.width/2;
-//      text.y = node.position.y-text.height/2;
-//
-//      if (texts[node.id]) {
-//        stage.removeChild(texts[node.id]);
-//        delete texts[node.id];
-//      }
-//
-//      texts[node.id] = text;
-//
-//      stage.addChild(text);
-//    }
+
 //
 //    function createLine(node, x2, y2) {
 //      var line = new PIXI.Graphics();
