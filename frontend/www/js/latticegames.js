@@ -142,6 +142,8 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
 
             node.text = text;
 
+      currentNode = null;
+      stage = stage;
       function onDragStart(event)
       {
 
@@ -164,6 +166,8 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
           this.dragging = true;
       }
 
+      lines = [];
+
       function onDragEnd()
       {
           this.alpha = 1;
@@ -173,35 +177,39 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
           // set the interaction data to null
           this.data = null;
 
-
-    //                    if (currentNode) {
-    //
-    //                      x2 = renderer.plugins.interaction.eventData.data.global.x;
-    //                      y2 = renderer.plugins.interaction.eventData.data.global.y
-    //
-    //                      for (i in nodes) {
-    //                        if (x2 > nodes[i].position.x - nodes[i].width/2 && x2 < nodes[i].position.x + nodes[i].width/2 &&
-    //                            y2 > nodes[i].position.y - nodes[i].height/2 && y2 < nodes[i].position.y + nodes[i].height/2) {
-    //                              // fine
-    //                              linkNodes(currentNode, nodes[i]);
-    //                            } else {
-    //                              stage.removeChild(lines[currentNode.id]);
-    //                              delete lines[currentNode.id];
-    //                            }
-    //                      }
-    //
-    //                      currentNode = null;
-    //                    }
-
+          currentNode = null;
       }
+
+          function createLine(node, x2, y2) {
+            var line = new PIXI.Graphics();
+            // draw a line
+            line.lineStyle(5, 0x0000FF, 1);
+
+            line.position.x1 = node.position.x;
+            line.position.y1 = node.position.y;
+            line.position.x2 = x2;
+            line.position.y2 = y2;
+
+
+            line.moveTo(line.position.x1, line.position.y1);
+            line.lineTo(line.position.x2, line.position.y2);
+
+            // add it to the stage
+            stage.addChild(line);
+            lines.push(line);
+
+          }
 
       function onDragMove()
       {
-    //      if (currentNode) {
-    //          x2 = renderer.plugins.interaction.eventData.data.global.x;
-    //          y2 = renderer.plugins.interaction.eventData.data.global.y
-    //          createLine(currentNode, x2, y2);
-    //      }
+          if (currentNode) {
+              x2 = renderer.plugins.interaction.eventData.data.global.x;
+              y2 = renderer.plugins.interaction.eventData.data.global.y
+              for (i in lines) {
+                stage.removeChild(lines[i]);
+              }
+              createLine(currentNode, x2, y2);
+          }
 
           if (this.dragging)
           {

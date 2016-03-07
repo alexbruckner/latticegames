@@ -93,29 +93,7 @@ angular.module('starter', ['ionic'])
 
 
 //
-//    function createLine(node, x2, y2) {
-//      var line = new PIXI.Graphics();
-//      // draw a line
-//      line.lineStyle(5, 0x0000FF, 1);
-//
-//      line.position.x1 = node.position.x;
-//      line.position.y1 = node.position.y;
-//      line.position.x2 = x2;
-//      line.position.y2 = y2;
-//
-//
-//      line.moveTo(line.position.x1, line.position.y1);
-//      line.lineTo(line.position.x2, line.position.y2);
-//
-//      if (lines[node.id]){
-//        stage.removeChild(lines[node.id]);
-//      }
-//      // add it to the stage
-//            stage.addChild(line);
-//      lines[node.id] = line
-//
-//
-//    }
+
 //
 //    function linkNodes(node1, node2) {
 //      var line = new PIXI.Graphics();
