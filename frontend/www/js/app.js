@@ -35,13 +35,11 @@ angular.module('starter', ['ionic'])
 
 .controller('CreateLatticeController', function($scope, $http) {
 
-  var lattice = LatticeGames.Lattice("Lattice");
 
 //  var n1 = LatticeGames.Node();
 
 //  lattice.add(n1);
 
-  log(lattice);
 
 //    $scope.latticeName= "Lattice";
 //
@@ -52,9 +50,9 @@ angular.module('starter', ['ionic'])
 //
 //
     var element = document.getElementById("createLattice");
-    WIDTH = 600;
-    HEIGHT = 400;
-    var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT);
+//    WIDTH = 600;
+//    HEIGHT = 400;
+    var renderer = PIXI.autoDetectRenderer();
     element.appendChild(renderer.view);
 
     // create the root of the scene graph
@@ -62,6 +60,11 @@ angular.module('starter', ['ionic'])
 
     // create a texture from an image path
     var texture = PIXI.Texture.fromImage('img/ionic.png');
+
+    var lattice = LatticeGames.Lattice("Lattice", renderer, stage, texture);
+    log(lattice);
+
+
 //
 //     function reset() {
 //
@@ -87,45 +90,7 @@ angular.module('starter', ['ionic'])
 //     }
 //
 //
-    createBackground(stage);
 
-    function createBackground(stage) {
-
-        // create our little background friend..
-        var background = new PIXI.Sprite();
-
-        // enable the background to be interactive... this will allow it to respond to mouse and touch events
-        background.interactive = true;
-
-        // this button mode will mean the hand cursor appears when you roll over the background with your mouse
-        background.buttonMode = true;
-
-        // make it a bit bigger, so it's easier to grab
-        background.width = WIDTH;
-        background.height = HEIGHT;
-
-        background.on('mousedown', backgroundMouseDown)
-                  .on('touchstart', backgroundMouseDown);
-
-        function backgroundMouseDown (e) {
-           x = renderer.plugins.interaction.eventData.data.global.x;
-           y = renderer.plugins.interaction.eventData.data.global.y;
-           createNode(x, y);
-        }
-
-        // move the sprite to its designated position
-        background.position.x = 0;
-        background.position.y = 0;
-
-        // add it to the stage
-        stage.addChild(background);
-
-    }
-
-    function createNode(x, y) {
-        lattice.add(LatticeGames.Node(stage, texture, x, y));
-        log(lattice);
-    }
 
 //
 //    function createLine(node, x2, y2) {
