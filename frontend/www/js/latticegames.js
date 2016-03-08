@@ -177,7 +177,12 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
           // set the interaction data to null
           this.data = null;
 
-          currentNode = null;
+          if (currentNode) {
+            for (i in lines) {
+              stage.removeChild(lines[i]);
+            }
+            currentNode = null;
+          }
       }
 
           function createLine(node, x2, y2) {
