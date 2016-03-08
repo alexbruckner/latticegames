@@ -96,10 +96,12 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
   this.toString = function(){
     return "Node {id: {0}, name: {1}, neighbours: {2}}".format(this.id, this.name, this.neighbours.map(function (neighbour) {return neighbour.name;}).join(", "));
   }
-  this.graphics = graphics(this.name, stage, texture, x, y);
-  function graphics(name, stage, texture, x, y) {
+  this.graphics = graphics(this, stage, texture, x, y);
+  function graphics(parentNode, stage, texture, x, y) {
           // create our little node friend..
             var node = new PIXI.Sprite(texture);
+
+            node.parentNode = parentNode;
 
             // enable the node to be interactive... this will allow it to respond to mouse and touch events
             node.interactive = true;
@@ -135,7 +137,7 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
             stage.addChild(node);
 
 //            // add text to node
-            var text = new PIXI.Text(name, {font:"20px Arial", fill:"red"});
+            var text = new PIXI.Text(parentNode.name, {font:"20px Arial", fill:"red"});
             text.x = node.position.x-text.width/2;
             text.y = node.position.y-text.height/2;
             stage.addChild(text);
@@ -143,6 +145,7 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
             node.text = text;
 
       currentNode = null;
+      targetNode = null;
       stage = stage;
       function onDragStart(event)
       {
@@ -180,7 +183,16 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
           if (currentNode) {
             for (i in lines) {
               stage.removeChild(lines[i]);
+              delete lines[i];
             }
+
+            if (targetNode) {
+              currentNode.parentNode.link(targetNode);
+            }
+
+            log(currentNode.parentNode);
+            log(targetNode);
+
             currentNode = null;
           }
       }
@@ -212,8 +224,9 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
               y2 = renderer.plugins.interaction.eventData.data.global.y
               for (i in lines) {
                 stage.removeChild(lines[i]);
+                delete lines[i];
               }
-
+              var hit = false;
               for (i in lattice.nodes) {
                 on = lattice.nodes[i];
                 if(on.name){ //TODO why?
@@ -225,10 +238,14 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
                    ) {
                     x2 = on.graphics.position.x == currentNode.position.x ? x2 : on.graphics.position.x;
                     y2 = on.graphics.position.y == currentNode.position.y ? y2 : on.graphics.position.y;
+                    hit = true;
+                    targetNode = on;
                   }
 
                 }
               }
+
+              if (!hit) targetNode = null;
 
               createLine(currentNode, x2, y2);
           }
