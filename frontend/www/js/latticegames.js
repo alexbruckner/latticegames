@@ -213,6 +213,23 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
               for (i in lines) {
                 stage.removeChild(lines[i]);
               }
+
+              for (i in lattice.nodes) {
+                on = lattice.nodes[i];
+                if(on.name){ //TODO why?
+
+                  if (x2 > on.graphics.position.x - on.graphics.width/2
+                   && x2 < on.graphics.position.x + on.graphics.width/2
+                   && y2 > on.graphics.position.y - on.graphics.height/2
+                   && y2 < on.graphics.position.y + on.graphics.height/2
+                   ) {
+                    x2 = on.graphics.position.x == currentNode.position.x ? x2 : on.graphics.position.x;
+                    y2 = on.graphics.position.y == currentNode.position.y ? y2 : on.graphics.position.y;
+                  }
+
+                }
+              }
+
               createLine(currentNode, x2, y2);
           }
 
