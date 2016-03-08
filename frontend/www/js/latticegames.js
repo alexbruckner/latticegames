@@ -88,6 +88,7 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
         if (!dontDoOther) {
           otherNode.link(this, true);
         }
+        return true;
       }
     } else {
       console.error("{0} and {1} do not belong to the same lattice.".format(this, otherNode));
@@ -187,7 +188,8 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
             }
 
             if (targetNode) {
-              currentNode.parentNode.link(targetNode);
+              if (currentNode.parentNode.link(targetNode))
+                createLink(currentNode, targetNode.graphics);
             }
 
             log(currentNode.parentNode);
@@ -216,6 +218,20 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
             lines.push(line);
 
           }
+
+         function createLink(node1, node2) {
+            var line = new PIXI.Graphics();
+            // draw a line
+            line.lineStyle(5, 0x0000FF, 1);
+
+            line.moveTo(node1.position.x, node1.position.y);
+            line.lineTo(node2.position.x, node2.position.y);
+
+            // add it to the stage
+            stage.addChild(line);
+
+          }
+
 
       function onDragMove()
       {
