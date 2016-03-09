@@ -38,55 +38,6 @@ angular.module('starter', ['ionic'])
     var lattice = LatticeGames.Lattice("Lattice", "createLattice");
     log(lattice);
 
-//
-
-//
-//    function linkNodes(node1, node2) {
-//      var line = new PIXI.Graphics();
-//      // draw a line
-//      line.lineStyle(5, 0x0000FF, 1);
-//
-//      line.position.x1 = node1.position.x;
-//      line.position.y1 = node1.position.y;
-//      line.position.x2 = node2.position.x;
-//      line.position.y2 = node2.position.y;
-//
-//      line.moveTo(line.position.x1, line.position.y1);
-//      line.lineTo(line.position.x2, line.position.y2);
-//
-//      if (links[node1.id+"-"+node2.id]){
-//        stage.removeChild(links[node1.id+"-"+node2.id]);
-//        delete links[node1.id+"-"+node2.id];
-//      }
-//
-//      if (links[node2.id+"-"+node1.id]){
-//        stage.removeChild(links[node2.id+"-"+node1.id]);
-//        delete links[node2.id+"-"+node1.id];
-//      }
-//
-//      // add it to the stage
-//      stage.addChild(line);
-//      line.node1 = node1;
-//      line.node2 = node2;
-//      links[node1.id+"-"+node2.id] = line
-//
-//      createText(node1);
-//      createText(node2);
-//
-//    }
-//
-//    function moveLink(node) {
-//      for (i in links) {
-//        if (i.startsWith(node.id+'-')) {
-//          linkNodes(node, links[i].node2);
-//        } else if (i.endsWith('-'+node.id)) {
-//          linkNodes(links[i].node1, node);
-//        }
-//      }
-//    }
-//
-
-//
 //     $scope.loadLattices = function () {
 //        $http({
 //            method: 'GET',
