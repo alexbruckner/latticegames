@@ -141,7 +141,7 @@ angular.module('starter', ['ionic'])
           }).then(
             function success(response) {
               console.log(response.data);
-              $scope.latticeId = response.data.id;
+              $scope.lattice.id = response.data.id;
 //              saveNodesForLattice($scope.latticeId);
 //              $scope.loadLattices();
             },
