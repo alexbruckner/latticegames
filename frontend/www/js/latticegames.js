@@ -107,7 +107,7 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
     return "Node {id: {0}, name: {1}, neighbours: {2}}".format(this.id, this.name, this.neighbours.map(function (neighbour) {return neighbour.name;}).join(", "));
   }
   this.toJSON = function(){
-    return '{"id": {0}, "name": "{1}", "neighbours": [{2}]}'.format(this.id == null ? null : '"'+ this.id + '"', this.name, this.neighbours.map(function (neighbour) {return neighbour.name;}).join(", "));
+    return '{"id": {0}, "name": "{1}", "x": "{2}", "y": "{3}", "neighbours": [{4}]}'.format(this.id == null ? null : '"'+ this.id + '"', this.name, this.graphics.position.x, this.graphics.position.y, this.neighbours.map(function (neighbour) {return neighbour.name;}).join(", "));
   }
   this.graphics = graphics(this, stage, texture, x, y);
   function graphics(parentNode, stage, texture, x, y) {
