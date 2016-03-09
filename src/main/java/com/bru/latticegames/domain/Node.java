@@ -125,7 +125,7 @@ public class    Node implements Serializable {
     }
 
     private String getNeighbourNames() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         boolean added = false;
         for (Node n : neighbours) {
             sb.append(n.name).append(", ");
