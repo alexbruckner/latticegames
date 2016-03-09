@@ -26,9 +26,8 @@ public class Lattice implements Serializable {
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
-    
+
     @OneToMany(mappedBy = "lattice")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Node> nodes = new HashSet<>();
 
@@ -43,7 +42,7 @@ public class Lattice implements Serializable {
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -81,6 +80,7 @@ public class Lattice implements Serializable {
         return "Lattice{" +
             "id=" + id +
             ", name='" + name + "'" +
+            ", nodes='" + nodes + "'" +
             '}';
     }
 }

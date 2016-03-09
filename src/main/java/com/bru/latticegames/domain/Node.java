@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * A Node.
@@ -118,6 +119,7 @@ public class    Node implements Serializable {
             ", name='" + name + "'" +
             ", x='" + x + "'" +
             ", y='" + y + "'" +
+            ", neighbours=[" + neighbours.stream().map(n -> n.name).collect(Collectors.joining(", ")) + "]" +
             '}';
     }
 }
