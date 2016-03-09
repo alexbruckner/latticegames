@@ -72,6 +72,12 @@ var Lattice = function (name, renderer, stage, texture) {
   return this;
 }
 
+var currentNode = null;
+var targetNode = null;
+var lines = [];
+var links = [];
+
+
 var Node = function (lattice, renderer, stage, texture, name, x, y) {
   this.id = null;
   this.name = name;
@@ -145,9 +151,7 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
 
             node.text = text;
 
-      currentNode = null;
-      targetNode = null;
-      stage = stage;
+
       function onDragStart(event)
       {
 
@@ -170,7 +174,6 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
           this.dragging = true;
       }
 
-      lines = [];
 
       function onDragEnd()
       {
@@ -189,11 +192,8 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
 
             if (targetNode) {
               if (currentNode.parentNode.link(targetNode))
-                createLink(currentNode, targetNode.graphics);
+                redrawLinks();
             }
-
-            log(currentNode.parentNode);
-            log(targetNode);
 
             currentNode = null;
           }
@@ -204,14 +204,8 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
             // draw a line
             line.lineStyle(5, 0x0000FF, 1);
 
-            line.position.x1 = node.position.x;
-            line.position.y1 = node.position.y;
-            line.position.x2 = x2;
-            line.position.y2 = y2;
-
-
-            line.moveTo(line.position.x1, line.position.y1);
-            line.lineTo(line.position.x2, line.position.y2);
+            line.moveTo(node.position.x, node.position.y);
+            line.lineTo(x2, y2);
 
             // add it to the stage
             stage.addChild(line);
@@ -228,10 +222,29 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
             line.lineTo(node2.position.x, node2.position.y);
 
             // add it to the stage
+            links.push(line);
             stage.addChild(line);
 
           }
 
+      function redrawLinks() {
+        for (i in links) {
+          stage.removeChild(links[i]);
+          delete links[i];
+        }
+
+        for (i in lattice.nodes) {
+          n = lattice.nodes[i];
+          if (n.name){
+            for (j in n.neighbours) {
+              l = n.neighbours[j];
+              if (l.name) {
+                createLink(n.graphics, l.graphics);
+              }
+            }
+          }
+        }
+      }
 
       function onDragMove()
       {
@@ -283,8 +296,7 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
               this.text.x = node.position.x-text.width/2;
               this.text.y = node.position.y-text.height/2;
 
-    //          moveLink(this);
-    //          createText(this);
+              redrawLinks();
 
           }
       }
