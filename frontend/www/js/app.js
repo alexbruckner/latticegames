@@ -137,7 +137,7 @@ angular.module('starter', ['ionic'])
          $http({
               method: $scope.lattice.id == null ? 'POST' : 'PUT',
               url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices',
-              data: {"id" : $scope.lattice.id, "name": $scope.lattice.name}
+              data: $scope.lattice.toJSON()
           }).then(
             function success(response) {
               console.log(response.data);

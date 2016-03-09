@@ -36,6 +36,9 @@ var Lattice = function (name, renderer, stage, texture) {
   this.toString = function(){
     return "Lattice {id: {0}, name: {1}, nodes: {2}}".format(this.id, this.name, this.nodes.join(", "));
   }
+  this.toJSON = function(){
+    return '{"id": {0}, "name": "{1}", "nodes": [{2}]}'.format(this.id == null ? null : '"'+ this.id + '"', this.name, this.nodes.map(function(node){return node.toJSON();}).join(", "));
+  }
   this.graphics = createBackground(this, renderer, stage, texture);
   function createBackground(lattice, renderer, stage, texture) {
 
@@ -102,6 +105,9 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
   }
   this.toString = function(){
     return "Node {id: {0}, name: {1}, neighbours: {2}}".format(this.id, this.name, this.neighbours.map(function (neighbour) {return neighbour.name;}).join(", "));
+  }
+  this.toJSON = function(){
+    return '{"id": {0}, "name": "{1}", "neighbours": [{2}]}'.format(this.id == null ? null : '"'+ this.id + '"', this.name, this.neighbours.map(function (neighbour) {return neighbour.name;}).join(", "));
   }
   this.graphics = graphics(this, stage, texture, x, y);
   function graphics(parentNode, stage, texture, x, y) {
