@@ -310,7 +310,23 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
 
 LatticeGames = {
 
-    Lattice: function (name, renderer, stage, texture) {
+    Lattice: function (name, elementId) {
+      var element = document.getElementById(elementId);
+      var renderer = PIXI.autoDetectRenderer();
+      element.appendChild(renderer.view);
+
+      // create the root of the scene graph
+      var stage = new PIXI.Container();
+
+      // create a texture from an image path
+      var texture = PIXI.Texture.fromImage('img/ionic.png');
+
+      requestAnimationFrame( animate );
+      function animate() {
+          requestAnimationFrame(animate);
+          renderer.render(stage);
+      }
+
       return new Lattice(name, renderer, stage, texture);
     }
 }

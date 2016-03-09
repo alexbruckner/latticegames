@@ -35,62 +35,8 @@ angular.module('starter', ['ionic'])
 
 .controller('CreateLatticeController', function($scope, $http) {
 
-
-//  var n1 = LatticeGames.Node();
-
-//  lattice.add(n1);
-
-
-//    $scope.latticeName= "Lattice";
-//
-//    var nodes = {};
-//    var lines = {};
-//    var links = {};
-//    var texts = {};
-//
-//
-    var element = document.getElementById("createLattice");
-//    WIDTH = 600;
-//    HEIGHT = 400;
-    var renderer = PIXI.autoDetectRenderer();
-    element.appendChild(renderer.view);
-
-    // create the root of the scene graph
-    var stage = new PIXI.Container();
-
-    // create a texture from an image path
-    var texture = PIXI.Texture.fromImage('img/ionic.png');
-
-    var lattice = LatticeGames.Lattice("Lattice", renderer, stage, texture);
+    var lattice = LatticeGames.Lattice("Lattice", "createLattice");
     log(lattice);
-
-
-//
-//     function reset() {
-//
-//          for (i in nodes) {
-//              stage.removeChild(nodes[i]);
-//              delete nodes[i];
-//          }
-//
-//          for (i in links) {
-//              stage.removeChild(links[i]);
-//              delete links[i];
-//          }
-//
-//          for (i in texts) {
-//              stage.removeChild(texts[i]);
-//              delete texts[i];
-//          }
-//
-//          nodes = {};
-//          links = {};
-//          texts = {};
-//
-//     }
-//
-//
-
 
 //
 
@@ -139,15 +85,7 @@ angular.module('starter', ['ionic'])
 //      }
 //    }
 //
-    requestAnimationFrame( animate );
 
-    function animate() {
-
-        requestAnimationFrame(animate);
-
-        // render the stage
-        renderer.render(stage);
-    }
 //
 //     $scope.loadLattices = function () {
 //        $http({
