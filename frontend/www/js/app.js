@@ -35,22 +35,21 @@ angular.module('starter', ['ionic'])
 
 .controller('CreateLatticeController', function($scope, $http) {
 
-    var lattice = LatticeGames.Lattice("Lattice", "createLattice");
-    log(lattice);
+    $scope.lattice = LatticeGames.Lattice("Lattice", "createLattice");
 
-//     $scope.loadLattices = function () {
-//        $http({
-//            method: 'GET',
-//            url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices'
-//        }).then(
-//          function success(response) {
-//            $scope.lattices = response.data;
-//          },
-//          function error(response) {
-//            console.log(response);
-//          }
-//        );
-//      }
+     $scope.loadLattices = function () {
+        $http({
+            method: 'GET',
+            url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices'
+        }).then(
+          function success(response) {
+            $scope.lattices = response.data;
+          },
+          function error(response) {
+            console.log(response);
+          }
+        );
+      }
 //
 //      $scope.displayLattice = function (latticeId) {
 //
@@ -134,24 +133,24 @@ angular.module('starter', ['ionic'])
 //        }
 //      }
 //
-//      $scope.saveLattice = function () {
-//         $http({
-//              method: $scope.latticeId == null ? 'POST' : 'PUT',
-//              url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices',
-//              data: {"id" : $scope.latticeId, "name": $scope.latticeName}
-//          }).then(
-//            function success(response) {
-//              console.log(response.data);
-//              $scope.latticeId = response.data.id;
+      $scope.saveLattice = function () {
+         $http({
+              method: $scope.lattice.id == null ? 'POST' : 'PUT',
+              url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices',
+              data: {"id" : $scope.lattice.id, "name": $scope.lattice.name}
+          }).then(
+            function success(response) {
+              console.log(response.data);
+              $scope.latticeId = response.data.id;
 //              saveNodesForLattice($scope.latticeId);
 //              $scope.loadLattices();
-//            },
-//            function error(response) {
-//              console.log("ERROR !!! " + response);
-//            }
-//          );
-//        $scope.loadLattices();
-//      }
+            },
+            function error(response) {
+              console.log("ERROR !!! " + response);
+            }
+          );
+        $scope.loadLattices();
+      }
 //
-//      $scope.loadLattices();
+      $scope.loadLattices();
 })
