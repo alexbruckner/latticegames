@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -119,7 +120,21 @@ public class    Node implements Serializable {
             ", name='" + name + "'" +
             ", x='" + x + "'" +
             ", y='" + y + "'" +
-            ", neighbours=[" + neighbours.stream().map(n -> n.name).collect(Collectors.joining(", ")) + "]" +
+            ", neighbours=[" + getNeighbourNames() + "]" +
             '}';
+    }
+
+    private String getNeighbourNames() {
+        StringBuffer sb = new StringBuffer();
+        boolean added = false;
+        for (Node n : neighbours) {
+            sb.append(n.name).append(", ");
+            added = true;
+        }
+        if (added) {
+            sb.deleteCharAt(sb.length()-1);
+            sb.deleteCharAt(sb.length()-1);
+        }
+        return sb.toString();
     }
 }
