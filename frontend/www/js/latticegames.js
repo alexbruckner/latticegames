@@ -102,7 +102,6 @@ function reset(lattice,stage) {
       stage.removeChild(lattice.nodes[i].graphics);
     }
   }
-  // TODO remove nodes & texts
 }
 
 var Node = function (lattice, renderer, stage, texture, name, x, y) {
