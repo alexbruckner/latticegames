@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Spring Data JPA repository for the Node entity.
@@ -18,6 +19,6 @@ public interface NodeRepository extends JpaRepository<Node,Long> {
     @Query("select node from Node node left join fetch node.neighbours where node.id =:id")
     Node findOneWithEagerRelationships(@Param("id") Long id);
 
-    List<Node> findByLattice_Id(Long latticeId);
+    Set<Node> findByLattice_Id(Long latticeId);
 
 }

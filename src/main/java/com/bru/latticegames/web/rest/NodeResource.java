@@ -22,6 +22,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing Node.
@@ -108,20 +109,6 @@ public class NodeResource {
         Page<Node> page = nodeRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/nodes");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-    /**
-     * GET  /nodes -> get all the nodes for a lattice.
-     */
-    @RequestMapping(value = "/lattices/{latticeId}/nodes",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<List<Node>> getNodesForLattice(@PathVariable("latticeId") Long latticeId)
-        throws URISyntaxException {
-        log.debug("REST request to get Nodes for lattice: " + latticeId);
-        List<Node> nodes = nodeRepository.findByLattice_Id(latticeId);
-        return ResponseEntity.ok().body(nodes);
     }
 
     /**
