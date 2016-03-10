@@ -50,9 +50,11 @@ angular.module('starter', ['ionic'])
           }
         );
       }
-//
-//      $scope.displayLattice = function (latticeId) {
-//
+
+      $scope.displayLattice = function (latticeId) {
+
+      $scope.lattice.reset();
+
 //        $http({
 //            method: 'GET',
 //            url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices/' + latticeId + '/nodes'
@@ -75,64 +77,11 @@ angular.module('starter', ['ionic'])
 //            console.log("ERROR !!! " + response);
 //          }
 //        );
-//
-//
-//
-//      }
-//
-//
-//      // TODO NOTE we want a service to expose the api in js only, move all backend stuff into a service.
-//
-//      function updateNodesWithLinks() {
-//         for (i in links) {
-//
-//              var linkNodes = i.split("-");
-//
-//              console.log("link: " + linkNodes[0] + "->" + linkNodes[1]);
-//
-//              $http({
-//                  method: 'POST',
-//                  url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/nodes/link/' + nodes[linkNodes[0]].dbId + '/' + nodes[linkNodes[1]].dbId
-//              }).then(
-//                function success(response) {
-//                  console.log(response.data);
-//                },
-//                function error(response) {
-//                  console.log("ERROR !!! " +  response);
-//                }
-//              );
-//          }
-//      }
-//
-//      function saveNodesForLattice(latticeId) {
-//
-//        var maxCnt = Object.keys(nodes).length;
-//        var cnt = 0;
-//        for (i in nodes) {
-//
-//          console.log("Saving node: " + nodes[i].id + " for lattice: " + latticeId + ", dbid: " + nodes[i].dbId);
-//
-//          $http({
-//              method: nodes[i].dbId == null ? 'POST' : 'PUT',
-//              url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/nodes',
-//              data: {"id" : nodes[i].dbId , "lattice" : {"id" : $scope.latticeId}, "name" : nodes[i].id, "x" : nodes[i].position.x, "y" : nodes[i].position.y}
-//          }).then(
-//            function success(response) {
-//              console.log(response.data);
-//              nodes[response.data.name].dbId = response.data.id;
-//              cnt++;
-//              console.log(cnt);
-//              if (cnt == maxCnt) { // last one and all ok!
-//                updateNodesWithLinks();
-//              }
-//            },
-//            function error(response) {
-//              console.log("ERROR !!! " +  response);
-//            }
-//          );
-//        }
-//      }
-//
+
+
+
+      }
+
       $scope.saveLattice = function () {
          $http({
               method: $scope.lattice.id == null ? 'POST' : 'PUT',
@@ -142,8 +91,6 @@ angular.module('starter', ['ionic'])
             function success(response) {
               console.log(response.data);
               $scope.lattice.id = response.data.id;
-//              saveNodesForLattice($scope.latticeId);
-//              $scope.loadLattices();
             },
             function error(response) {
               console.log("ERROR !!! " + response);
@@ -151,6 +98,5 @@ angular.module('starter', ['ionic'])
           );
         $scope.loadLattices();
       }
-//
       $scope.loadLattices();
 })

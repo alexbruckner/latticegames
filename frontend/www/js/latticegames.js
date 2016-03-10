@@ -72,6 +72,13 @@ var Lattice = function (name, renderer, stage, texture) {
       stage.addChild(background);
 
   }
+
+  this.reset = function() {
+   reset(stage);
+   this.id = null;
+   this.name = 'Reset';
+   this.nodes = [];
+  }
   return this;
 }
 
@@ -80,6 +87,17 @@ var targetNode = null;
 var lines = [];
 var links = [];
 
+function reset(stage) {
+  for (i in lines) {
+    stage.removeChild(lines[i]);
+    delete lines[i];
+  }
+  for (i in links) {
+    stage.removeChild(links[i]);
+    delete links[i];
+  }
+  // TODO remove nodes & texts
+}
 
 var Node = function (lattice, renderer, stage, texture, name, x, y) {
   this.id = null;
@@ -265,7 +283,7 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
               var hit = false;
               for (i in lattice.nodes) {
                 on = lattice.nodes[i];
-                if(on.name){ //TODO why?
+                if(on.name){
 
                   if (x2 > on.graphics.position.x - on.graphics.width/2
                    && x2 < on.graphics.position.x + on.graphics.width/2
