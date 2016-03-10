@@ -80,7 +80,6 @@ public class Lattice implements Serializable {
         return "Lattice{" +
             "id=" + id +
             ", name='" + name + "'" +
-            ", nodes='" + nodes + "'" +
             '}';
     }
 }

@@ -120,21 +120,6 @@ public class    Node implements Serializable {
             ", name='" + name + "'" +
             ", x='" + x + "'" +
             ", y='" + y + "'" +
-            ", neighbours=[" + getNeighbourNames() + "]" +
             '}';
-    }
-
-    private String getNeighbourNames() {
-        StringBuilder sb = new StringBuilder();
-        boolean added = false;
-        for (Node n : neighbours) {
-            sb.append(n.name).append(", ");
-            added = true;
-        }
-        if (added) {
-            sb.deleteCharAt(sb.length()-1);
-            sb.deleteCharAt(sb.length()-1);
-        }
-        return sb.toString();
     }
 }

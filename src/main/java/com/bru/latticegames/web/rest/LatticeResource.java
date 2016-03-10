@@ -1,5 +1,7 @@
 package com.bru.latticegames.web.rest;
 
+import com.bru.latticegames.domain.Node;
+import com.bru.latticegames.repository.NodeRepository;
 import com.codahale.metrics.annotation.Timed;
 import com.bru.latticegames.domain.Lattice;
 import com.bru.latticegames.repository.LatticeRepository;
@@ -19,8 +21,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * REST controller for managing Lattice.
@@ -30,10 +31,13 @@ import java.util.Optional;
 public class LatticeResource {
 
     private final Logger log = LoggerFactory.getLogger(LatticeResource.class);
-        
+
     @Inject
     private LatticeRepository latticeRepository;
-    
+
+    @Inject
+    private NodeRepository nodeRepository;
+
     /**
      * POST  /lattices -> Create a new lattice.
      */
@@ -46,7 +50,40 @@ public class LatticeResource {
         if (lattice.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("lattice", "idexists", "A new lattice cannot already have an ID")).body(null);
         }
-        Lattice result = latticeRepository.save(lattice);
+
+        Lattice result;
+        if (lattice.getNodes() != null && lattice.getNodes().size() > 0) {
+            Set<Node> latticeNodes = lattice.getNodes();
+            lattice.setNodes(null);
+
+            result = latticeRepository.saveAndFlush(lattice);
+
+            Map<String, Set<String>> links = new HashMap<>();
+            latticeNodes.forEach(
+                node -> {
+                    node.setLattice(result);
+                    links.put(node.getName(), new HashSet<>());
+                    node.getNeighbours().forEach(neighbour -> links.get(node.getName()).add(neighbour.getName()));
+                    node.setNeighbours(null);
+                }
+            );
+            List<Node> results = nodeRepository.save(latticeNodes);
+
+            results.forEach(node -> {
+                node.setNeighbours(new HashSet<>());
+                Set<String> linkToNames = links.get(node.getName());
+                results.forEach(node2 -> {
+                    if (linkToNames.contains(node2.getName())) {
+                        node.getNeighbours().add(node2);
+                    }
+                });
+            });
+
+            nodeRepository.save(results);
+        } else {
+            result = latticeRepository.saveAndFlush(lattice);
+        }
+
         return ResponseEntity.created(new URI("/api/lattices/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("lattice", result.getId().toString()))
             .body(result);
@@ -80,7 +117,7 @@ public class LatticeResource {
     public ResponseEntity<List<Lattice>> getAllLattices(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Lattices");
-        Page<Lattice> page = latticeRepository.findAll(pageable); 
+        Page<Lattice> page = latticeRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/lattices");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
