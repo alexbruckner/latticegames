@@ -55,31 +55,20 @@ angular.module('starter', ['ionic'])
 
       $scope.lattice.reset();
 
-//        $http({
-//            method: 'GET',
-//            url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices/' + latticeId + '/nodes'
-//        }).then(
-//          function success(response) {
-//            console.log(response.data);
-//            reset();
-//            nodeId = 1;
-//            $scope.latticeId = latticeId;
-//            nodes = response.data;
-//            // TODO show links too in loaded lattice! and fix that friggin bug shite
-//            for (i in nodes) {
-//              console.debug(nodes[i]);
-//              createNode(nodes[i].x, nodes[i].y, nodes[i].name);
-//              nodeId++;
-//            }
-//
-//          },
-//          function error(response) {
-//            console.log("ERROR !!! " + response);
-//          }
-//        );
-
-
-
+        $http({
+            method: 'GET',
+            url: API_PROTOCOL + '://' + API_HOST + ':' + API_PORT + '/api/lattices/' + latticeId
+        }).then(
+          function success(response) {
+            console.log(response.data);
+            $scope.lattice.id = response.data.id;
+            log($scope.lattice);
+            //TODO draw the fucker plus nodes and links
+          },
+          function error(response) {
+            console.log("ERROR !!! " + response);
+          }
+        );
       }
 
       $scope.saveLattice = function () {
