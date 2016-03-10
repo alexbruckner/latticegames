@@ -159,6 +159,7 @@ public class LatticeResource {
     @Timed
     public ResponseEntity<Void> deleteLattice(@PathVariable Long id) {
         log.debug("REST request to delete Lattice : {}", id);
+        nodeRepository.delete(nodeRepository.findByLattice_Id(id));
         latticeRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("lattice", id.toString())).build();
     }
