@@ -53,40 +53,45 @@ public class LatticeResource {
 
         Lattice result;
         if (lattice.getNodes() != null && lattice.getNodes().size() > 0) {
-            Set<Node> latticeNodes = lattice.getNodes();
-            lattice.setNodes(null);
-
-            result = latticeRepository.saveAndFlush(lattice);
-
-            Map<String, Set<String>> links = new HashMap<>();
-            latticeNodes.forEach(
-                node -> {
-                    node.setLattice(result);
-                    links.put(node.getName(), new HashSet<>());
-                    node.getNeighbours().forEach(neighbour -> links.get(node.getName()).add(neighbour.getName()));
-                    node.setNeighbours(null);
-                }
-            );
-            List<Node> results = nodeRepository.save(latticeNodes);
-
-            results.forEach(node -> {
-                node.setNeighbours(new HashSet<>());
-                Set<String> linkToNames = links.get(node.getName());
-                results.forEach(node2 -> {
-                    if (linkToNames.contains(node2.getName())) {
-                        node.getNeighbours().add(node2);
-                    }
-                });
-            });
-
-            nodeRepository.save(results);
+            result = doDaNodesMofo(lattice);
         } else {
-            result = latticeRepository.saveAndFlush(lattice);
+            result = latticeRepository.save(lattice);
         }
 
         return ResponseEntity.created(new URI("/api/lattices/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("lattice", result.getId().toString()))
             .body(result);
+    }
+
+    private Lattice doDaNodesMofo(Lattice lattice) {
+        Set<Node> latticeNodes = lattice.getNodes();
+        lattice.setNodes(null);
+
+        Lattice result = latticeRepository.saveAndFlush(lattice);
+
+        Map<String, Set<String>> links = new HashMap<>();
+        latticeNodes.forEach(
+            node -> {
+                node.setLattice(result);
+                links.put(node.getName(), new HashSet<>());
+                node.getNeighbours().forEach(neighbour -> links.get(node.getName()).add(neighbour.getName()));
+                node.setNeighbours(null);
+            }
+        );
+        List<Node> results = nodeRepository.save(latticeNodes);
+
+        results.forEach(node -> {
+            node.setNeighbours(new HashSet<>());
+            Set<String> linkToNames = links.get(node.getName());
+            results.forEach(node2 -> {
+                if (linkToNames.contains(node2.getName())) {
+                    node.getNeighbours().add(node2);
+                }
+            });
+        });
+
+        nodeRepository.save(results);
+        return result;
     }
 
     /**
@@ -98,10 +103,16 @@ public class LatticeResource {
     @Timed
     public ResponseEntity<Lattice> updateLattice(@Valid @RequestBody Lattice lattice) throws URISyntaxException {
         log.debug("REST request to update Lattice : {}", lattice);
+        Lattice result;
         if (lattice.getId() == null) {
             return createLattice(lattice);
+        } else if (lattice.getNodes() != null || lattice.getNodes().size() > 0) {
+            // TODO delete evereeeeethang mofos!
+            nodeRepository.delete(nodeRepository.findByLattice_Id(lattice.getId()));
+            result = doDaNodesMofo(lattice);
+        } else {
+            result = latticeRepository.save(lattice);
         }
-        Lattice result = latticeRepository.save(lattice);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("lattice", lattice.getId().toString()))
             .body(result);
