@@ -74,7 +74,7 @@ var Lattice = function (name, renderer, stage, texture) {
   }
 
   this.reset = function() {
-   reset(stage);
+   reset(this, stage);
    this.id = null;
    this.name = 'Reset';
    this.nodes = [];
@@ -87,7 +87,7 @@ var targetNode = null;
 var lines = [];
 var links = [];
 
-function reset(stage) {
+function reset(lattice,stage) {
   for (i in lines) {
     stage.removeChild(lines[i]);
     delete lines[i];
@@ -95,6 +95,12 @@ function reset(stage) {
   for (i in links) {
     stage.removeChild(links[i]);
     delete links[i];
+  }
+  for (i in lattice.nodes) {
+  if(lattice.nodes[i].name) {
+      stage.removeChild(lattice.nodes[i].graphics.text);
+      stage.removeChild(lattice.nodes[i].graphics);
+    }
   }
   // TODO remove nodes & texts
 }
