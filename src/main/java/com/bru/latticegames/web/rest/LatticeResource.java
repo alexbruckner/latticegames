@@ -143,7 +143,9 @@ public class LatticeResource {
     public ResponseEntity<Lattice> getLattice(@PathVariable Long id) {
         log.debug("REST request to get Lattice : {}", id);
         Lattice lattice = latticeRepository.findOne(id);
-        lattice.setNodes(nodeRepository.findByLattice_Id(lattice.getId()));
+        Set<Node> nodes = nodeRepository.findByLattice_Id(lattice.getId());
+        nodes.forEach(node -> node.setNeighbours(nodeRepository.findOneWithEagerRelationships(node.getId()).getNeighbours()));
+        lattice.setNodes(nodes);
         return Optional.ofNullable(lattice)
             .map(result -> new ResponseEntity<>(
                 result,

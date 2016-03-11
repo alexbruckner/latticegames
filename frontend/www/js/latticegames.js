@@ -29,6 +29,7 @@ var Lattice = function (name, renderer, stage, texture) {
     if (!this.nodes.contains(node)) {
       node.lattice = this;
       this.nodes.push(node);
+      return node;
     } else {
       console.error("{0} already a member of {1}".format(node, this));
     }
@@ -120,12 +121,46 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
         if (!dontDoOther) {
           otherNode.link(this, true);
         }
+        redrawLinks();
         return true;
       }
     } else {
       console.error("{0} and {1} do not belong to the same lattice.".format(this, otherNode));
     }
   }
+  function redrawLinks() {
+    for (i in links) {
+      stage.removeChild(links[i]);
+      delete links[i];
+    }
+
+    for (i in lattice.nodes) {
+      n = lattice.nodes[i];
+      if (n.name){
+        for (j in n.neighbours) {
+          l = n.neighbours[j];
+          if (l.name) {
+            createLink(n.graphics, l.graphics);
+          }
+        }
+      }
+    }
+  }
+
+   function createLink(node1, node2) {
+      var line = new PIXI.Graphics();
+      // draw a line
+      line.lineStyle(5, 0x0000FF, 1);
+
+      line.moveTo(node1.position.x, node1.position.y);
+      line.lineTo(node2.position.x, node2.position.y);
+
+      // add it to the stage
+      links.push(line);
+      stage.addChild(line);
+
+    }
+
   this.toString = function(){
     return "Node {id: {0}, name: {1}, neighbours: {2}}".format(this.id, this.name, this.neighbours.map(function (neighbour) {return neighbour.name;}).join(", "));
   }
@@ -221,8 +256,7 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
             }
 
             if (targetNode) {
-              if (currentNode.parentNode.link(targetNode))
-                redrawLinks();
+              currentNode.parentNode.link(targetNode);
             }
 
             currentNode = null;
@@ -242,39 +276,6 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
             lines.push(line);
 
           }
-
-         function createLink(node1, node2) {
-            var line = new PIXI.Graphics();
-            // draw a line
-            line.lineStyle(5, 0x0000FF, 1);
-
-            line.moveTo(node1.position.x, node1.position.y);
-            line.lineTo(node2.position.x, node2.position.y);
-
-            // add it to the stage
-            links.push(line);
-            stage.addChild(line);
-
-          }
-
-      function redrawLinks() {
-        for (i in links) {
-          stage.removeChild(links[i]);
-          delete links[i];
-        }
-
-        for (i in lattice.nodes) {
-          n = lattice.nodes[i];
-          if (n.name){
-            for (j in n.neighbours) {
-              l = n.neighbours[j];
-              if (l.name) {
-                createLink(n.graphics, l.graphics);
-              }
-            }
-          }
-        }
-      }
 
       function onDragMove()
       {

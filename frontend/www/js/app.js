@@ -64,10 +64,35 @@ angular.module('starter', ['ionic'])
             $scope.lattice.id = response.data.id;
             $scope.lattice.name = response.data.name;
             log($scope.lattice);
+            var nodes = [];
             for (i in response.data.nodes) {
               var node = response.data.nodes[i];
-              if (node.name) {$scope.lattice.addNode(node.x, node.y, node.name);}
+              if (node.name) {
+                nodes.push($scope.lattice.addNode(node.x, node.y, node.name));
+              }
             }
+            for (i in response.data.nodes) {
+              var node = response.data.nodes[i];
+              if (node.name) {
+                for (j in node.neighbours) {
+                  var neighbour = node.neighbours[j];
+                  if (neighbour.name) {
+                    for (k in nodes) {
+                      // get node of node.name
+                      if (nodes[k].name == node.name){
+                        for (l in nodes) {
+                            // get node of node.name
+                            if (nodes[l].name == neighbour.name){
+                              nodes[k].link(nodes[l]);
+                            }
+                          }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
           },
           function error(response) {
             console.log("ERROR !!! " + response);
