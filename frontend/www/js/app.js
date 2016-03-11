@@ -62,8 +62,12 @@ angular.module('starter', ['ionic'])
           function success(response) {
             console.log(response.data);
             $scope.lattice.id = response.data.id;
+            $scope.lattice.name = response.data.name;
             log($scope.lattice);
-            //TODO draw the fucker plus nodes and links
+            for (i in response.data.nodes) {
+              var node = response.data.nodes[i];
+              if (node.name) {$scope.lattice.addNode(node.x, node.y, node.name);}
+            }
           },
           function error(response) {
             console.log("ERROR !!! " + response);

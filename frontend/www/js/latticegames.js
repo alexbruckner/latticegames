@@ -23,8 +23,8 @@ var Lattice = function (name, renderer, stage, texture) {
   this.id = null;
   this.name = name;
   this.nodes = [];
-  this.addNode = function (stage, texture, x, y) {
-    var name = this.nodes.length + 1;
+  this.addNode = function (x, y, name) {
+    if (!name) var name = this.nodes.length + 1;
     node = new Node(this, renderer, stage, texture, name, x, y);
     if (!this.nodes.contains(node)) {
       node.lattice = this;
@@ -61,7 +61,7 @@ var Lattice = function (name, renderer, stage, texture) {
       function backgroundMouseDown (e) {
          var x = renderer.plugins.interaction.eventData.data.global.x;
          var y = renderer.plugins.interaction.eventData.data.global.y;
-         lattice.addNode(stage, texture, x, y);
+         lattice.addNode(x, y);
       }
 
       // move the sprite to its designated position
