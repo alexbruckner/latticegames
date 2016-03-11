@@ -80,12 +80,12 @@ angular.module('starter', ['ionic'])
             function success(response) {
               console.log(response.data);
               $scope.lattice.id = response.data.id;
+              $scope.loadLattices();
             },
             function error(response) {
               console.log("ERROR !!! " + response);
             }
           );
-        $scope.loadLattices();
       }
       $scope.loadLattices();
 })
