@@ -29,22 +29,15 @@
 <body ng-app="starter">
 
 <div id="createLattice" ng-app="myApp" ng-controller="CreateLatticeController">
-
-  Lattice Name: <input type="text" ng-model="lattice.name"><br>
-  <br>
-  Lattice Name: {{lattice.name}}
-
-  <br>
-    <h3>Lattices</h3>
     <div ng-repeat="l in lattices">
-      <table><tr><td><button ng-click="displayLattice(l.id)">{{l.id}}&nbsp;{{l.name}}</button></td></tr></table>
+      <td><button ng-click="displayLattice(l.id)">{{l.id}}&nbsp;{{l.name}}</button></td></tr></table>
     </div>
   <br>
-
-  <button ng-click="lattice.reset()">Reset</button>
-  <button ng-click="saveLattice()">Save Lattice</button>
-  <br>
-
+  <div style="float:right">
+    <button ng-click="lattice.reset()">Reset</button>
+    <button ng-click="saveLattice()">Save Lattice</button>
+  </div>
+  <input style="height: 24px;" type="text" ng-model="lattice.name">
 </div>
 
 </body>
