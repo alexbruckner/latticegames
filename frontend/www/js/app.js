@@ -83,7 +83,7 @@ angular.module('starter', ['ionic'])
                         for (l in nodes) {
                             // get node of node.name
                             if (nodes[l].name == neighbour.name){
-                              nodes[k].link(nodes[l]);
+                              nodes[k].link(nodes[l], true);
                             }
                           }
                       }
