@@ -83,7 +83,8 @@ var Lattice = function (name, renderer, stage, texture) {
   return this;
 }
 
-var currentNode = null;
+var currentNodeDblClick = null;
+var currentNodeLongPress = null;
 var targetNode = null;
 var lines = [];
 var links = [];
@@ -224,19 +225,39 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
         if (this.lastClickTime) {
 
             if (Date.now() - this.lastClickTime < 200) {
-               currentNode = this;
+               currentNodeLongPress = null;
+               currentNodeDblClick = this;
                return;
             }
 
-          }
-         this.lastClickTime = Date.now();
+        }
+        this.lastClickTime = Date.now();
 
-          // store a reference to the data
-          // the reason for this is because of multitouch
-          // we want to track the movement of this particular touch
-          this.data = event.data;
-          this.alpha = 0.5;
-          this.dragging = true;
+        // store a reference to the data
+        // the reason for this is because of multitouch
+        // we want to track the movement of this particular touch
+        this.data = event.data;
+        this.alpha = 0.5;
+        this.dragging = true;
+
+        currentNodeLongPress = this;
+        setTimeout(function(){
+          if (currentNodeLongPress) {
+            //TODO show dialog
+            log(renderer.plugins.interaction.eventData.data.global.x);
+            log(renderer.plugins.interaction.eventData.data.global.y);
+
+            var span = document.createElement("span");
+            span.style.position = "absolute";
+            span.innerHTML="Dialog";
+            span.style.left=renderer.plugins.interaction.eventData.data.global.x+"px";
+            span.style.top=renderer.plugins.interaction.eventData.data.global.y+"px";
+            span.style.background="red";
+            document.body.appendChild(span);
+
+          }
+        }, 1000);
+
       }
 
 
@@ -249,37 +270,38 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
           // set the interaction data to null
           this.data = null;
 
-          if (currentNode) {
+          if (currentNodeDblClick) {
             for (i in lines) {
               stage.removeChild(lines[i]);
               delete lines[i];
             }
 
             if (targetNode) {
-              currentNode.parentNode.link(targetNode);
+              currentNodeDblClick.parentNode.link(targetNode);
             }
 
-            currentNode = null;
+            currentNodeDblClick = null;
           }
       }
 
-          function createLine(node, x2, y2) {
-            var line = new PIXI.Graphics();
-            // draw a line
-            line.lineStyle(5, 0x0000FF, 1);
+      function createLine(node, x2, y2) {
+        var line = new PIXI.Graphics();
+        // draw a line
+        line.lineStyle(5, 0x0000FF, 1);
 
-            line.moveTo(node.position.x, node.position.y);
-            line.lineTo(x2, y2);
+        line.moveTo(node.position.x, node.position.y);
+        line.lineTo(x2, y2);
 
-            // add it to the stage
-            stage.addChild(line);
-            lines.push(line);
-
-          }
+        // add it to the stage
+        stage.addChild(line);
+        lines.push(line);
+      }
 
       function onDragMove()
       {
-          if (currentNode) {
+          currentNodeLongPress = null;
+
+          if (currentNodeDblClick) {
               x2 = renderer.plugins.interaction.eventData.data.global.x;
               y2 = renderer.plugins.interaction.eventData.data.global.y
               for (i in lines) {
@@ -296,8 +318,8 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
                    && y2 > on.graphics.position.y - on.graphics.height/2
                    && y2 < on.graphics.position.y + on.graphics.height/2
                    ) {
-                    x2 = on.graphics.position.x == currentNode.position.x ? x2 : on.graphics.position.x;
-                    y2 = on.graphics.position.y == currentNode.position.y ? y2 : on.graphics.position.y;
+                    x2 = on.graphics.position.x == currentNodeDblClick.position.x ? x2 : on.graphics.position.x;
+                    y2 = on.graphics.position.y == currentNodeDblClick.position.y ? y2 : on.graphics.position.y;
                     hit = true;
                     targetNode = on;
                   }
@@ -307,7 +329,7 @@ var Node = function (lattice, renderer, stage, texture, name, x, y) {
 
               if (!hit) targetNode = null;
 
-              createLine(currentNode, x2, y2);
+              createLine(currentNodeDblClick, x2, y2);
           }
 
           if (this.dragging)
